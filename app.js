@@ -1,7 +1,7 @@
 /**
  * TO-DO! 
  * [✅] Sync with Github
- * [ ] Add models to Object for better rendering/handling
+ * [✅] Add models to Object for better rendering/handling
  * [ ] convert tables to grids
  * [✅] Heatmap for seating flows
  * [ ] Add charts
@@ -73,10 +73,13 @@ pacingTable.addEventListener('change', e => {
 })
 
 // create arrays to store our models
-let seatingLabels = []
-let flatSeating = []
-let setSeating = []
-let customSeating = []
+
+let models = {
+    seatingLabels: [],
+    flatSeating: [],
+    setSeating: [],
+    customSeating: []
+}
 
 // display our initial settings
 function displaySettings () {
@@ -91,25 +94,25 @@ function displaySettings () {
 
 // generate the labels for each interval and store them in an array
 function generateLabels (openingTime, seatingIntervals) {
-    seatingLabels = []
+    models.seatingLabels = []
     for (let i = -1; i < seatingIntervals; i++ ) {
         let seconds = openingTime + (900 * i)
         let timeString = new Date(seconds * 1000).toISOString().substr(11, 5)
-        seatingLabels.push(timeString)
+        models.seatingLabels.push(timeString)
     };   
 }
 
 // generate the values for our flat seating and store them in an array
 function flatSeatingGen (capacity, duration, seatingIntervals) {
-    flatSeating = [0];
+    models.flatSeating = [0];
     for (let i = 0; i < seatingIntervals; i++) {
-        flatSeating.push(Math.floor(capacity / (duration * 4)))
+        models.flatSeating.push(Math.floor(capacity / (duration * 4)))
     }
 }
 
 // generate the values for our set seating and store them in an array
 function setSeatingGen (capacity, duration, seatingIntervals) {
-    setSeating = [0];
+    models.setSeating = [0];
     for (let i = 0; i < seatingIntervals; i++) {
         // calcuate the index of the seating in the interval
         let intervalIndex = calcIntIndex(i, duration)
@@ -132,13 +135,13 @@ function setSeatingGen (capacity, duration, seatingIntervals) {
             val = 0
         }
 
-        setSeating.push(Math.floor(val))
+        models.setSeating.push(Math.floor(val))
     }
 }
 
 function customSeatingGen(seatingIntervals) {
     for (let i = 0; i < seatingIntervals; i++) {
-        customSeating.push(0)
+        models.customSeating.push(0)
     }
 }
 
@@ -226,21 +229,21 @@ function updateTables () {
     displaySettings()
 
     generateLabels(venueSettings.openingTime, venueSettings.seatingIntervals)
-flatSeatingGen(venueSettings.capacity, venueSettings.duration, venueSettings.seatingIntervals)
-setSeatingGen(venueSettings.capacity, venueSettings.duration, venueSettings.seatingIntervals)
-customSeatingGen(venueSettings.seatingIntervals)
+    flatSeatingGen(venueSettings.capacity, venueSettings.duration, venueSettings.seatingIntervals)
+    setSeatingGen(venueSettings.capacity, venueSettings.duration, venueSettings.seatingIntervals)
+    customSeatingGen(venueSettings.seatingIntervals)
     
     pacingTable.innerHTML = ""
-    createTableRow(pacingTable, "Time", seatingLabels, "label")
+    createTableRow(pacingTable, "Time", models.seatingLabels, "label")
 
-    createTableRow(pacingTable, "Flat", flatSeating, "model")
-    createServiceFlow(flatSeating)
+    createTableRow(pacingTable, "Flat", models.flatSeating, "model")
+    createServiceFlow(models.flatSeating)
 
-    createTableRow(pacingTable, "Set", setSeating, "model")
-    createServiceFlow(setSeating)
+    createTableRow(pacingTable, "Set", models.setSeating, "model")
+    createServiceFlow(models.setSeating)
 
-    createTableRow(pacingTable, "Custom", customSeating, "model")
-    createServiceFlow(customSeating)
+    createTableRow(pacingTable, "Custom", models.customSeating, "model")
+    createServiceFlow(models.customSeating)
 }
 
 generateLabels(venueSettings.openingTime, venueSettings.seatingIntervals)
