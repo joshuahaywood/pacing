@@ -1,5 +1,6 @@
 /**
  * TO-DO! 
+ * [✅] Sync with Github
  * [ ] Add models to Object for better rendering/handling
  * [ ] convert tables to grids
  * [✅] Heatmap for seating flows
