@@ -178,19 +178,22 @@ function createServiceFlow (model) {
 }
 
 // creates a table row for a set of data
-function createTableRow (table, label, data, type) {
-    let row = document.createElement('tr')
-    let header = document.createElement('td')
+function createTableRow (table, label, data, type, modelName) {
+    let modelParent = document.createElement('div')
+    let row = document.createElement('div')
+    let header = document.createElement('div')
 
-    header.classList.add("header", "vertical-data", type)
+    modelParent.classList.add("parent", type, modelName)
     row.classList.add("vertical-row", type)
+    header.classList.add("header", "vertical-data", type)
 
+    table.appendChild(modelParent)
+    modelParent.appendChild(row)
     row.appendChild(header)
-    table.appendChild(row)
     header.innerHTML = label
     
     for (let i=0; i < venueSettings.seatingIntervals; i++) {
-        let dataPoint = document.createElement('td')
+        let dataPoint = document.createElement('div')
         row.appendChild(dataPoint)
         dataPoint.classList.add('vertical-data', type)
         
@@ -207,6 +210,7 @@ function createTableRow (table, label, data, type) {
         dataPoint.innerHTML = `<input class="${type}" data-model-name="${label}" value=${data[i]}></input>`
     }
 }
+
 
 function heatMapColorforValue(value) {
     let h 
@@ -246,9 +250,25 @@ function updateTables () {
     createServiceFlow(models.customSeating)
 }
 
-generateLabels(venueSettings.openingTime, venueSettings.seatingIntervals)
-flatSeatingGen(venueSettings.capacity, venueSettings.duration, venueSettings.seatingIntervals)
-setSeatingGen(venueSettings.capacity, venueSettings.duration, venueSettings.seatingIntervals)
-customSeatingGen(venueSettings.seatingIntervals)
+function refreshTables () {
+    // display settings
+    displaySettings() 
+
+    // populate our models object
+    generateLabels(venueSettings.openingTime, venueSettings.seatingIntervals)
+    flatSeatingGen(venueSettings.capacity, venueSettings.duration, venueSettings.seatingIntervals)
+    setSeatingGen(venueSettings.capacity, venueSettings.duration, venueSettings.seatingIntervals)
+    customSeatingGen(venueSettings.seatingIntervals)
+
+    // clear the pacing table
+    pacingTable.innerHTML = ""
+
+    // for each of our models, add them as sections to the table
+    for (const [key, value] of Object.entries(models)) {
+        console.log(`${key}: ${value}`)
+    }
+}
+
+
 
 updateTables()
