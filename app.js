@@ -66,7 +66,7 @@ pacingTable.addEventListener('change', e => {
     console.log(modelName)
 
     if (modelName === "Custom") {
-        customSeating[index] = changedValue
+        models.customSeating[index] = changedValue
     }
     console.log(index)
     updateTables()
