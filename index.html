@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="app.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gridjs/dist/gridjs.umd.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Pacing v3!</h1>
+
+    <table id="settings-table">
+        <tr>
+            <td class="header">Target Turns</td>
+            <td id="turns"><input type="number" step="0.25"></input></td>
+            <td class="header">Capacity</td>
+            <td id="capacity"><input type="number" step="5"></input></td>
+            <td class="header">Duration</td>
+            <td id="duration"><input type="number" step="0.25"></input></td>
+        </tr>
+        <tr>
+            <td class="header">Opening Time</td>
+            <td id="openingTime"><input type="time"></input></td>
+            <td class="header">Seating Intervals</td>
+            <td id="seatingIntervals"><input type="number"></input></td>
+            <td class="header">Target Covers</td>
+            <td id="coverTarget"><input type="number" step="25"></input></td>
+        </tr>
+    </table>
+
+    <div id="pacing-table">
+    </div>
+</body>
+</html>
