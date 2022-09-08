@@ -12,15 +12,14 @@ table {
     text-align: center;
     margin: 1rem;
     border-radius: 10px;
+    background-color: white;
 }
 
 #pacing-table {
-    border: 2px solid hsla(0, 0%, 50%);
     display: flex;
     overflow: scroll;
     width: fit-content;
     border-radius: 6px;
-    background: white;
 }
 
 th, td { 
@@ -28,21 +27,37 @@ th, td {
     border: 0.5px solid rgb(187, 187, 187);
 }
 
+.parent {
+    display: flex;
+    margin: 5px;
+    border: 2px solid rgb(187, 187, 187);
+    border-radius: 5px;
+    background-color: white;;
+}
+
 
 .header {
     background-color: rgb(170, 204, 200);
     text-align: center;
+    padding: 0.2rem;
 }
 
+
 input {
+    background: none;;
     border: none;
     width: 7rem;
     font-size: 1rem;
     text-align: center;
+    padding: 0.2rem;
 }
 
 input[type=number]::-webkit-inner-spin-button {
     opacity: 1
+}
+
+input.flow {
+    pointer-events: none;
 }
 
 .vertical-row { 

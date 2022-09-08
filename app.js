@@ -52,24 +52,20 @@ settingsTable.addEventListener('change', e => {
     window.localStorage.removeItem('user')
     window.localStorage.setItem('settings', JSON.stringify(venueSettings))
 
-    updateTables()
+    refreshTables()
 })
 
+// update to Object model
 pacingTable.addEventListener('change', e => {
     let changedValue = Number(e.target.value)
+
     let cell = e.target.parentNode
-
     let index = Array.prototype.indexOf.call(cell.parentNode.children, cell) - 1
-    console.log(index)
-
     let modelName = e.target.getAttribute("data-model-name")
-    console.log(modelName)
 
-    if (modelName === "Custom") {
-        models.customSeating[index] = changedValue
-    }
-    console.log(index)
-    updateTables()
+    models[modelName].data[index] = changedValue
+
+    refreshTables()
 })
 
 // create arrays to store our models
@@ -175,7 +171,7 @@ function calcTurnsRemaining (index, duration)  {
 // 🚨 todo - update to Object model
 function createServiceFlow (model) {
     let serviceFlow = []
-    for (let i = 0; i<model.length; i++) {
+    for (let i = 0; i<model.data.length; i++) {
         
         let firstSeatinginInt
 
@@ -186,20 +182,18 @@ function createServiceFlow (model) {
         }
 
         // create an array of the seatings still in session
-        let currentSeatingIntervals = model.slice(firstSeatinginInt, i+1)
+        let currentSeatingIntervals = model.data.slice(firstSeatinginInt, i+1)
 
         // sum together the seatings
         let seatsFilled = currentSeatingIntervals.reduce((total, value) => total + value, 0)
 
-        serviceFlow.push(seatsFilled)
-        
+        serviceFlow.push(seatsFilled)  
     }
-   // needs to be updated to match new function 
-   createTableRow(pacingTable, "Flow", serviceFlow, "flow")
+    model.flow = serviceFlow
 }
 
 // creates a table row for a set of data
-function createTableRow (key, parent) {
+function createTableRow (key, parent, dataType) {
     
     // create new containers for the row and the header cell 
     let row = document.createElement('div')
@@ -217,21 +211,23 @@ function createTableRow (key, parent) {
         
         let dataPoint = document.createElement('div')
         row.appendChild(dataPoint)
-        dataPoint.classList.add('vertical-data', models[key].type)
+        dataPoint.classList.add('vertical-data', dataType)
         
         // add the heatmap background colour
-        if (models[key].type === "flow") {
-            let colourTemp = heatMapColorforValue(data[i])
+        if (dataType === "flow") {
+            let colourTemp = heatMapColorforValue(models[key].flow[i])
             dataPoint.style.backgroundColor = colourTemp
             
-            if (data[i] > venueSettings.capacity) {
+            if (models[key].flow[i] > venueSettings.capacity) {
                 dataPoint.style.border = "1px solid red"
             }
         }
 
         // fill the cell with an input, with the value from the model
-        dataPoint.innerHTML = `<input class="${models[key.type]}" data-model-name="${key}" value=${models[key].data[i]}></input>`
+        dataPoint.innerHTML = `<input class="${models[key].type} ${dataType}" data-model-name="${key}" value=${models[key][dataType][i]}></input>`
     }
+
+    
 }
 
 function heatMapColorforValue(value) {
@@ -251,36 +247,14 @@ if (window.localStorage.length === 0) {
     venueSettings = JSON.parse(window.localStorage.getItem('settings'))
 }
 
-function updateTables () {
-    displaySettings()
-
-    generateLabels(venueSettings.openingTime, venueSettings.seatingIntervals)
-    flatSeatingGen(venueSettings.capacity, venueSettings.duration, venueSettings.seatingIntervals)
-    setSeatingGen(venueSettings.capacity, venueSettings.duration, venueSettings.seatingIntervals)
-    customSeatingGen(venueSettings.seatingIntervals)
-    
-    pacingTable.innerHTML = ""
-    createTableRow(pacingTable, "Time", models.seatingLabels.data, "label")
-
-    createTableRow(pacingTable, "Flat", models.flatSeating.data, "model")
-    createServiceFlow(models.flatSeating.data)
-
-    createTableRow(pacingTable, "Set", models.setSeating.data, "model")
-    createServiceFlow(models.setSeating.data)
-
-    createTableRow(pacingTable, "Custom", models.customSeating.data, "model")
-    createServiceFlow(models.customSeating.data)
-}
 
 function refreshTables () {
     // display settings
     displaySettings() 
 
-    // populate our models object
-    generateLabels(venueSettings.openingTime, venueSettings.seatingIntervals)
-    flatSeatingGen(venueSettings.capacity, venueSettings.duration, venueSettings.seatingIntervals)
-    setSeatingGen(venueSettings.capacity, venueSettings.duration, venueSettings.seatingIntervals)
-    customSeatingGen(venueSettings.seatingIntervals)
+    createServiceFlow(models.flatSeating)
+    createServiceFlow(models.setSeating)
+    createServiceFlow(models.customSeating)
 
     // clear the pacing table
     pacingTable.innerHTML = ""
@@ -294,10 +268,17 @@ function refreshTables () {
         pacingTable.appendChild(modelParent)
         
         // create columns for the model and the flow
-        createTableRow (pacingTable, key, modelParent)
+        createTableRow (key, modelParent, "data")
+
+        if (models[key].hasOwnProperty("flow"))
+        createTableRow (key, modelParent, "flow")
     }
 }
 
-
+    // populate our models object
+    generateLabels(venueSettings.openingTime, venueSettings.seatingIntervals)
+    flatSeatingGen(venueSettings.capacity, venueSettings.duration, venueSettings.seatingIntervals)
+    setSeatingGen(venueSettings.capacity, venueSettings.duration, venueSettings.seatingIntervals)
+    customSeatingGen(venueSettings.seatingIntervals)
 
 refreshTables()
