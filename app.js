@@ -102,6 +102,43 @@ let models = {
     },
 }
 
+// Load the Visualization API and the corechart package.
+google.charts.load('current', {'packages':['corechart']});
+
+// Set a callback to run when the Google Visualization API is loaded.
+google.charts.setOnLoadCallback(drawChart);
+
+// Callback that creates and populates a data table,
+// instantiates the pie chart, passes in the data and
+// draws it.
+function drawChart() {
+
+// Create the data table.
+var data = new google.visualization.DataTable();
+
+let rows = []
+
+models.seatingLabels.data.forEach(label => rows.push([label]))
+models.flatSeating.data.forEach((dataPoint, index) => rows[index].push(dataPoint))
+models.setSeating.data.forEach((dataPoint, index) => rows[index].push(dataPoint))
+// models.customSeating.data.forEach((dataPoint, index) => rows[index].push(dataPoint))
+
+data.addColumn('string', 'Time');
+data.addColumn('number', 'Flat');
+data.addColumn('number', 'Set');
+/// data.addColumn('number', 'Custom');
+data.addRows(rows);
+
+// Set chart options
+var options = {'title':'Cover Flow',
+                'width':800,
+                'height':300};
+
+// Instantiate and draw our chart, passing in some options.
+var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+chart.draw(data, options);
+}
+
 // display our initial settings
 function displaySettings () {
     for (let [key, value] of Object.entries(venueSettings)) {
@@ -174,7 +211,6 @@ function calcTurnsRemaining (index, duration)  {
     return venueSettings.turns - Math.floor(index/(duration * 4))
 }
 
-// 🚨 todo - update to Object model
 function createServiceFlow (model) {
     let serviceFlow = []
     for (let i = 0; i<model.data.length; i++) {
@@ -277,6 +313,8 @@ function refreshTables () {
         if (models[key].hasOwnProperty("flow"))
         createTableRow (key, modelParent, "flow")
     }
+
+    drawChart()
 }
 
     // populate our models object
@@ -292,3 +330,6 @@ if (window.localStorage.length === 0) {
 }
 
 refreshTables()
+
+
+
