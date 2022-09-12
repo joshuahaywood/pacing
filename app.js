@@ -12,6 +12,7 @@
 // grab the table to display the models in
 let pacingTable = document.querySelector('#pacing-table')
 let settingsTable = document.querySelector('#settings-table')
+let settingsToggle = document.querySelector('#settings-toggle')
 
 // create our object and load some basic settings
 let venueSettings = {
@@ -22,6 +23,11 @@ let venueSettings = {
     seatingIntervals: 18,
     coverTarget: 537.5
 }
+
+// show and hide the settings pane on button click
+settingsToggle.addEventListener('click', e => {
+    settingsTable.classList.toggle("hidden")
+})
 
 // listen for the user changing settings and save them to local storage
 settingsTable.addEventListener('change', e => {
@@ -199,8 +205,8 @@ function createTableRow (key, parent, dataType) {
     let row = document.createElement('div')
     let header = document.createElement('div')
     
-    row.classList.add("vertical-row", models[key].type)
-    header.classList.add("header", "vertical-data", models[key].type)
+    row.classList.add("vertical-row", dataType)
+    header.classList.add("header", "vertical-data", dataType)
     
     parent.appendChild(row)
     row.appendChild(header)
@@ -240,17 +246,15 @@ function heatMapColorforValue(value) {
     return "hsl(" + h + ", 60%, 75%)";
   }
 
-// save the default settings to local storage
-if (window.localStorage.length === 0) {
-    window.localStorage.setItem('settings', JSON.stringify(venueSettings))
-} else {
-    venueSettings = JSON.parse(window.localStorage.getItem('settings'))
-}
-
-
+ 
 function refreshTables () {
     // display settings
     displaySettings() 
+
+    generateLabels(venueSettings.openingTime, venueSettings.seatingIntervals)
+    flatSeatingGen(venueSettings.capacity, venueSettings.duration, venueSettings.seatingIntervals)
+    setSeatingGen(venueSettings.capacity, venueSettings.duration, venueSettings.seatingIntervals)
+    customSeatingGen(venueSettings.seatingIntervals)
 
     createServiceFlow(models.flatSeating)
     createServiceFlow(models.setSeating)
@@ -280,5 +284,11 @@ function refreshTables () {
     flatSeatingGen(venueSettings.capacity, venueSettings.duration, venueSettings.seatingIntervals)
     setSeatingGen(venueSettings.capacity, venueSettings.duration, venueSettings.seatingIntervals)
     customSeatingGen(venueSettings.seatingIntervals)
+
+if (window.localStorage.length === 0) {
+    window.localStorage.setItem('settings', JSON.stringify(venueSettings))
+} else {
+    venueSettings = JSON.parse(window.localStorage.getItem('settings'))
+}
 
 refreshTables()

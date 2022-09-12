@@ -15,26 +15,47 @@ table {
     background-color: white;
 }
 
+#main-content {
+    display: flex;
+    height: 100%;
+    margin: 1rem;
+}
+
+#settings-table {
+    flex-direction: column;
+    background: white;
+    width: fit-content;
+    border-radius: 6px;
+    padding: 1rem;
+    border: 0.5px solid rgb(187, 187, 187);
+}
+
 #pacing-table {
     display: flex;
     overflow: scroll;
     width: fit-content;
     border-radius: 6px;
+    margin: auto;
 }
+
 
 th, td { 
     padding: 0.5rem;
-    border: 0.5px solid rgb(187, 187, 187);
+    
 }
 
 .parent {
     display: flex;
     margin: 5px;
-    border: 2px solid rgb(187, 187, 187);
+    border: 1px solid hsl(0, 0%, 70%);
     border-radius: 5px;
     background-color: white;;
 }
 
+.settings-header {
+    font-weight: bold;
+    padding-top: 1rem;
+}
 
 .header {
     background-color: rgb(170, 204, 200);
@@ -42,9 +63,14 @@ th, td {
     padding: 0.2rem;
 }
 
+.settings-input>input {
+    width:100%; 
+    padding: 0.2rem;
+    border: 0.5px solid rgb(187, 187, 187);
+}
 
 input {
-    background: none;;
+    background: none;
     border: none;
     width: 7rem;
     font-size: 1rem;
@@ -83,4 +109,8 @@ input.flow {
 
 input.model::-webkit-inner-spin-button {
     opacity: 1
+}
+
+.hidden {
+    display: none;
 }

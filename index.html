@@ -12,27 +12,35 @@
 </head>
 <body>
     <h1>Pacing v3!</h1>
+    <button id="settings-toggle">Show/Hide Settings</button>
+    
+    <div id="main-content">
+        <div id="settings-table">
+            <h3>Venue Settings</h3>
+            <div>
+                <div class="settings-header">Target Turns</div>
+                <div class="settings-input" id="turns"><input type="number" step="0.25"></input></div>
+                <div class="settings-header">Capacity</div>
+                <div class="settings-input" id="capacity"><input type="number" step="5"></input></div>
+            </div>
+            <div>
+                <div class="settings-header">Duration</div>
+                <div class="settings-input" id="duration"><input type="number" step="0.25"></input></div>
+                <div class="settings-header">Opening Time</div>
+                <div class="settings-input" id="openingTime"><input type="time"></input></div>
+            </div>
+            <div>
+                <div class="settings-header">Seating Intervals</div>
+                <div class="settings-input" id="seatingIntervals"><input type="number"></input></div>
+                <div class="settings-header">Target Covers</div>
+                <div class="settings-input" id="coverTarget"><input type="number" step="25"></input></div>
+            </div>
+        </div>
 
-    <table id="settings-table">
-        <tr>
-            <td class="header">Target Turns</td>
-            <td id="turns"><input type="number" step="0.25"></input></td>
-            <td class="header">Capacity</td>
-            <td id="capacity"><input type="number" step="5"></input></td>
-            <td class="header">Duration</td>
-            <td id="duration"><input type="number" step="0.25"></input></td>
-        </tr>
-        <tr>
-            <td class="header">Opening Time</td>
-            <td id="openingTime"><input type="time"></input></td>
-            <td class="header">Seating Intervals</td>
-            <td id="seatingIntervals"><input type="number"></input></td>
-            <td class="header">Target Covers</td>
-            <td id="coverTarget"><input type="number" step="25"></input></td>
-        </tr>
-    </table>
 
-    <div id="pacing-table">
+        <div id="pacing-table">
+        </div>
+
     </div>
 </body>
 </html>
