@@ -112,31 +112,56 @@ google.charts.setOnLoadCallback(drawChart);
 // instantiates the pie chart, passes in the data and
 // draws it.
 function drawChart() {
+    // Create the data table.
+    var data = new google.visualization.DataTable();
 
-// Create the data table.
-var data = new google.visualization.DataTable();
+    let rows = []
 
-let rows = []
+    models.seatingLabels.data.forEach(label => rows.push([label]))
+    models.flatSeating.data.forEach((dataPoint, index) => rows[index].push(dataPoint))
+    models.setSeating.data.forEach((dataPoint, index) => rows[index].push(dataPoint))
+    models.customSeating.data.forEach((dataPoint, index) => rows[index].push(dataPoint))
 
-models.seatingLabels.data.forEach(label => rows.push([label]))
-models.flatSeating.data.forEach((dataPoint, index) => rows[index].push(dataPoint))
-models.setSeating.data.forEach((dataPoint, index) => rows[index].push(dataPoint))
-// models.customSeating.data.forEach((dataPoint, index) => rows[index].push(dataPoint))
+    data.addColumn('string', 'Time');
+    data.addColumn('number', 'Flat');
+    data.addColumn('number', 'Set');
+    data.addColumn('number', 'Custom');
+    data.addRows(rows);
 
-data.addColumn('string', 'Time');
-data.addColumn('number', 'Flat');
-data.addColumn('number', 'Set');
-/// data.addColumn('number', 'Custom');
-data.addRows(rows);
+    // Set chart options
+    var options = {'title':'Cover Flow',
+        'width': "1000",
+        'height': '300',
+        backgroundColor: {
+            fill: '#2C363D',
+            opacity: 0
+        },
+        titleTextStyle: {
+            color: 'white'
+        },
+        hAxis: {
+            textStyle: {
+                color: 'white'
+            },
+             gridLines: {
+                color: 'red'
+            }
+        },
+        vAxis: {
+            textStyle: {
+                color: 'white'
+            }
+        },
+        legend: {
+            textStyle: {
+                color: 'white'        
+            }
+        }
+    };
 
-// Set chart options
-var options = {'title':'Cover Flow',
-                'width':800,
-                'height':300};
-
-// Instantiate and draw our chart, passing in some options.
-var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-chart.draw(data, options);
+    // Instantiate and draw our chart, passing in some options.
+    var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
 }
 
 // display our initial settings
@@ -198,8 +223,23 @@ function setSeatingGen (capacity, duration, seatingIntervals) {
 }
 
 function customSeatingGen(seatingIntervals) {
-    for (let i = 0; i < seatingIntervals; i++) {
+    models.customSeating.data = [0];
+    for (let i = 0; i < seatingIntervals +1; i++) {
         models.customSeating.data.push(0)
+    }
+}
+
+function customSeatingUpdate() {
+    const intervals = venueSettings.seatingIntervals + 1
+    const model = models.customSeating.data
+    let diff = intervals - model.length
+
+    if (diff < 0) {
+        models.customSeating.data = model.slice(0, model.length + diff)
+    } else {
+        for (let i=0; i<diff; i++) {
+            models.customSeating.data.push(0)
+        }
     }
 }
 
@@ -249,7 +289,7 @@ function createTableRow (key, parent, dataType) {
     header.innerHTML = models[key].title
     
     // create a cell for each of our seating intervals
-    for (let i=0; i < venueSettings.seatingIntervals; i++) {
+    for (let i=0; i<venueSettings.seatingIntervals; i++) {
         
         let dataPoint = document.createElement('div')
         row.appendChild(dataPoint)
@@ -279,7 +319,7 @@ function heatMapColorforValue(value) {
     } else {
         h = 120
     }
-    return "hsl(" + h + ", 60%, 75%)";
+    return "hsl(" + h + ", 30%, 50%)";
   }
 
  
@@ -290,7 +330,7 @@ function refreshTables () {
     generateLabels(venueSettings.openingTime, venueSettings.seatingIntervals)
     flatSeatingGen(venueSettings.capacity, venueSettings.duration, venueSettings.seatingIntervals)
     setSeatingGen(venueSettings.capacity, venueSettings.duration, venueSettings.seatingIntervals)
-    customSeatingGen(venueSettings.seatingIntervals)
+    customSeatingUpdate()
 
     createServiceFlow(models.flatSeating)
     createServiceFlow(models.setSeating)
@@ -313,7 +353,6 @@ function refreshTables () {
         if (models[key].hasOwnProperty("flow"))
         createTableRow (key, modelParent, "flow")
     }
-
     drawChart()
 }
 
