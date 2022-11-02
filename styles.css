@@ -3,46 +3,133 @@
     font-family:Arial, Helvetica, sans-serif
 }
 
-body {
-    background: hsla(0, 0%, 95%)
+nav {
+    display: flex; 
+    justify-content: space-between;
+    background-color: hsla(200, 20%, 30%);
+    align-items: center;
+    padding: 0 2rem;
 }
 
-table {
-    border-collapse: collapse;
-    text-align: center;
+body {
+    background: hsla(200, 20%, 20%);
+    color: lightgray;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    color: white;
+    font-size: 2rem;
+}
+
+h3 {
+    color: white;
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+    line-height: none;;
+}
+
+
+button {
+    background-color: hsl(173, 40%, 55%);
+    color: white;
+    font-size: 1rem;
+
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+    border: none;
+    padding: 1rem 2rem;
+    height: fit-content;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#main {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+#content {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
     margin: 1rem;
-    border-radius: 10px;
+    overflow: hidden;
+}
+
+#settings-table {
+    flex-direction: column;
+    background: hsla(200, 20%, 30%);
+    width: 20vw;
+    right: 0;
+    height: 100%;
+    padding: 1rem;
 }
 
 #pacing-table {
-    border: 2px solid hsla(0, 0%, 50%);
     display: flex;
-    overflow: scroll;
-    width: fit-content;
+    width: min(1100px, 100%);
     border-radius: 6px;
-    background: white;
+    background: hsla(200, 20%, 30%);
+    padding: 1rem;
+    margin: 1rem;
 }
 
-th, td { 
-    padding: 0.5rem;
-    border: 0.5px solid rgb(187, 187, 187);
+.parent {
+    display: flex;
+    margin: 5px;
+    background-color: hsla(200, 20%, 20%);
+    border: 1px solid hsla(200, 20%, 40%);
+    border-radius: 5px;
+    overflow: auto;
+    width: fit-content;
 }
 
+.settings-header {
+    font-weight: bold;
+    padding-top: .5rem;
+    padding-bottom: 0.1rem;
+}
 
 .header {
-    background-color: rgb(170, 204, 200);
+    background-color: hsla(200, 20%, 40%);
+    color: white;
     text-align: center;
+    padding: 0.2rem;
+    position: relative;
+    font-weight: 700;
+}
+
+.settings-input>input {
+    width:100%; 
+    padding: 0.3rem;
+    border: 0.5px solid black;
+    border-radius: 5px;
+    background: hsla(200, 20%, 20%);
 }
 
 input {
+    background: none;
+    color: white;
     border: none;
     width: 7rem;
     font-size: 1rem;
     text-align: center;
+    padding: 0.2rem;
 }
 
 input[type=number]::-webkit-inner-spin-button {
     opacity: 1
+}
+
+input.flow {
+    pointer-events: none;
+    color: rgb(239, 239, 239);
 }
 
 .vertical-row { 
@@ -50,16 +137,16 @@ input[type=number]::-webkit-inner-spin-button {
     float: left;
 }
 
-.header.flow {
-    background: lightgrey;
-}
-
 input.label {
     font-weight: bold
 }
 
+input.data, input.flow {
+    border-bottom: 0.5px solid hsla(200, 20%, 30%);
+}
+
 input.flow,input.label {
-    pointer-events:none;
+    pointer-events: none;
 }
 
 input.flow {
@@ -68,4 +155,20 @@ input.flow {
 
 input.model::-webkit-inner-spin-button {
     opacity: 1
+}
+
+.hidden {
+    display: none;
+}
+
+#chart_div {
+    display: flex;
+    justify-content: center;
+    width: min(1100px, 100%);
+    border-radius: 5px;
+    padding: 1rem;
+    margin: 1rem;
+    position: relative;
+    background: hsla(200, 20%, 30%);
+    overflow: scroll;
 }
