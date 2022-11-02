@@ -137,7 +137,7 @@ function drawChart() {
   // Set chart options
   var options = {
     title: "Cover Flow",
-    width: "1000",
+    width: "900",
     height: "300",
     backgroundColor: {
       fill: "#2C363D",
