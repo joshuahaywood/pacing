@@ -9,6 +9,8 @@ nav {
     background-color: hsla(200, 20%, 30%);
     align-items: center;
     padding: 0 2rem;
+    height: 10vh;
+    border-bottom: 2px solid hsla(200, 20%, 20%);;
 }
 
 body {
@@ -35,7 +37,6 @@ button {
     background-color: hsl(173, 40%, 55%);
     color: white;
     font-size: 1rem;
-
     text-transform: uppercase;
     letter-spacing: 0.1rem;
     border: none;
@@ -49,6 +50,7 @@ button {
     display: flex;
     justify-content: space-between;
     width: 100%;
+    height: 90vh;
 }
 
 #content {
@@ -65,14 +67,16 @@ button {
 #settings-table {
     flex-direction: column;
     background: hsla(200, 20%, 30%);
-    width: 20vw;
+    width: max(300px, 15vw);
     right: 0;
     height: 100%;
     padding: 1rem;
+    transition: transform 300ms ease-in-out;
 }
 
 #pacing-table {
     display: flex;
+    height: 80%;
     width: min(1100px, 100%);
     border-radius: 6px;
     background: hsla(200, 20%, 30%);
@@ -117,7 +121,7 @@ input {
     background: none;
     color: white;
     border: none;
-    width: 7rem;
+    width: 100%;
     font-size: 1rem;
     text-align: center;
     padding: 0.2rem;
@@ -158,16 +162,17 @@ input.model::-webkit-inner-spin-button {
 }
 
 .hidden {
-    display: none;
+    transform: translateX(500px);
 }
 
 #chart_div {
     display: flex;
     justify-content: center;
     width: min(1100px, 100%);
+    height: 40%;
     border-radius: 5px;
     padding: 1rem;
-    margin: 1rem;
+    margin-top: 1rem;
     position: relative;
     background: hsla(200, 20%, 30%);
     overflow: scroll;
