@@ -2,9 +2,9 @@
  * TO-DO!
  * [✅] Sync with Github
  * [✅] Add models to Object for better rendering/handling
- * [ ] convert tables to grids
+ * [✅] convert tables to grids
  * [✅] Heatmap for seating flows
- * [ ] Add charts
+ * [✅] Add charts
  * [ ] Show/hide models
  * [ ] Show/hide flows
  **/
@@ -137,8 +137,6 @@ function drawChart() {
   // Set chart options
   var options = {
     title: "Cover Flow",
-    width: "900",
-    height: "300",
     backgroundColor: {
       fill: "#2C363D",
       opacity: 0,
@@ -173,10 +171,13 @@ function drawChart() {
   chart.draw(data, options);
 }
 
+// redraw the chart when we change the size of the window
+window.onload = drawChart;
+window.addEventListener("resize", drawChart);
+
 // display our initial settings
 function displaySettings() {
   for (let [key, value] of Object.entries(venueSettings)) {
-    console.log(key);
     let keyName = settingsTable.querySelector(`#${key}`);
     if (key === "openingTime") {
       value = new Date(value * 1000).toISOString().substr(11, 5);
